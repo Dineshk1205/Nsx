@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    tools {
+       terraform 'Terraform'
+    }
+    stages {
+        stage('Git checkout') {
+           steps{
+                git branch: 'main', credentialsId: 'GitLab', url: 'http://gitlab.kdinesh.in/nsx/nsx.git'
+            }
+        }
+        stage('terraform Init') {
+            steps{
+                sh 'terraform init'
+            }
+        }
+        stage('terraform apply') {
+            steps{
+                sh 'terraform destroy --auto-approve'
+            }
+        }
+    }
+
+    
+}
